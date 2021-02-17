@@ -1,6 +1,6 @@
 function chooseGame(){
-	let choice = prompt("Would you like to play #1 Russian Roulette or #2 Guess the Number? Please enter 1 or 2.");
-	if(choice == 1) return beginRussian();
+	let choice = prompt("Would you like to play #1 Cowboy Duel or #2 Guess the Number? Please enter 1 or 2.");
+	if(choice == 1) return beginWestern();
 	else return guessingGame();
 }
 
@@ -10,26 +10,26 @@ const messages = {
   C: "What are the chances? You're both dead.",
   D: "You've both missed, take another shot!",
   E: "Do you want to play again?",
-  F: "The duel begins!"
+  F: "This town ain't big enough for the both of us!"
 }
 
-function beginRussian() {
+function beginWestern() {
   const response = confirm(messages.F);
   if (response) {
-    let play = russianRoulette(Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1)
+    let play = sixShooter(Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1)
     play();
   } else return;
 }
 
-function russianRoulette(n, m, i=0) {
-  return function russian() {
+function sixShooter(n, m, i=0) {
+  return function shooter() {
     alert(`You both fire a shot`)
     i++
     //console.log(i, n) //wouldnt have this log in "retail" version lolol
     if (i < n && i < m) {
       console.log('bang!')
       let response = confirm(messages.D)
-      if (response) russian(n-1 , m-1, i); 
+      if (response) shooter(n-1 , m-1, i); 
     }
     if (i === n && i < m) {
       console.log('boom!')
@@ -51,9 +51,9 @@ function russianRoulette(n, m, i=0) {
 }
 
 function playAgain() {
-  const response = confirm(messages.E)
-  if (response) return beginRussian()
-  return alert(messages.E); //jay
+  let response = confirm(messages.E)
+  if (response) return beginWestern();
+  else return chooseGame(); //jay
 }
 
 function userGuess(count, target){
@@ -61,7 +61,7 @@ function userGuess(count, target){
     let num = prompt("Guess a number between 1 and 100:")
     if(num == target){
       console.log("You win! Only "+(count+1)+" attempts! Great job!");
-      return;
+      return next();
     }
     else if(num > target){
       console.log("Too high.");
@@ -74,11 +74,19 @@ function userGuess(count, target){
   }
   else if(count = 10){
     console.log("You lose. You have guessed 10 times and not been right. The number I was thinking of was "+ target+".");
-    return;
+    return next();
     }
 }
 function guessingGame(){
   let times = 0;
   let winNum = Math.floor(Math.random()*100)+1;
   while(times<=10) return userGuess(times, winNum);
+}
+
+chooseGame()
+
+function next(){
+  let playz = prompt("Do you want to play again? 1-Yes & 2-No");
+  if(playz == 1) return chooseGame();
+  else return;
 }
